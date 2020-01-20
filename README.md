@@ -1,8 +1,25 @@
-# libnpmorg [![npm version](https://img.shields.io/npm/v/libnpmorg.svg)](https://npm.im/libnpmorg) [![license](https://img.shields.io/npm/l/libnpmorg.svg)](https://npm.im/libnpmorg) [![Travis](https://img.shields.io/travis/npm/libnpmorg.svg)](https://travis-ci.org/npm/libnpmorg) [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/zkat/libnpmorg?svg=true)](https://ci.appveyor.com/project/zkat/libnpmorg) [![Coverage Status](https://coveralls.io/repos/github/npm/libnpmorg/badge.svg?branch=latest)](https://coveralls.io/github/npm/libnpmorg?branch=latest)
+# libnpmorg
+
+[![npm version](https://img.shields.io/npm/v/libnpmorg.svg)](https://npm.im/libnpmorg)
+[![license](https://img.shields.io/npm/l/libnpmorg.svg)](https://npm.im/libnpmorg)
+[![Travis](https://img.shields.io/travis/npm/libnpmorg.svg)](https://travis-ci.org/npm/libnpmorg)
+[![Coverage Status](https://coveralls.io/repos/github/npm/libnpmorg/badge.svg?branch=latest)](https://coveralls.io/github/npm/libnpmorg?branch=latest)
 
 [`libnpmorg`](https://github.com/npm/libnpmorg) is a Node.js library for
 programmatically accessing the [npm Org membership
 API](https://github.com/npm/registry/blob/master/docs/orgs/memberships.md#membership-detail).
+
+## Table of Contents
+
+* [Example](#example)
+* [Install](#install)
+* [Contributing](#contributing)
+* [API](#api)
+  * [hook opts](#opts)
+  * [`set()`](#set)
+  * [`rm()`](#rm)
+  * [`ls()`](#ls)
+  * [`ls.stream()`](#ls-stream)
 
 ## Example
 
@@ -22,16 +39,22 @@ Roster {
 
 `$ npm install libnpmorg`
 
-## Table of Contents
+### Contributing
 
-* [Example](#example)
-* [Install](#install)
-* [API](#api)
-  * [hook opts](#opts)
-  * [`set()`](#set)
-  * [`rm()`](#rm)
-  * [`ls()`](#ls)
-  * [`ls.stream()`](#ls-stream)
+The npm team enthusiastically welcomes contributions and project participation!
+There's a bunch of things you can do if you want to contribute! The
+[Contributor Guide](https://github.com/npm/cli/blob/latest/CONTRIBUTING.md)
+outlines the process for community interaction and contribution. Please don't
+hesitate to jump in if you'd like to, or even ask us questions if something
+isn't clear.
+
+All participants and maintainers in this project are expected to follow the
+[npm Code of Conduct](https://www.npmjs.com/policies/conduct), and just
+generally be excellent to each other.
+
+Please refer to the [Changelog](CHANGELOG.md) for project history details, too.
+
+Happy hacking!
 
 ### API
 
