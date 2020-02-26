@@ -2,11 +2,7 @@
   "name": "libnpmorg",
   "version": "1.0.1",
   "description": "Programmatic api for `npm org` commands",
-  "author": {
-    "name": "Kat Marchán",
-    "email": "kzm@zkat.tech",
-    "twitter": "maybekatz"
-  },
+  "author": "Kat Marchán <kzm@sykosomatic.org>",
   "keywords": [
     "libnpm",
     "npm",
@@ -21,17 +17,16 @@
     "release": "standard-version -s",
     "postrelease": "npm publish && git push --follow-tags",
     "pretest": "standard",
-    "test": "tap -J --100 test/*.js",
-    "update-coc": "weallbehave -o . && git add CODE_OF_CONDUCT.md && git commit -m 'docs(coc): updated CODE_OF_CONDUCT.md'",
-    "update-contrib": "weallcontribute -o . && git add CONTRIBUTING.md && git commit -m 'docs(contributing): updated CONTRIBUTING.md'"
+    "test": "tap"
+  },
+  "tap": {
+    "check-coverage": true
   },
   "devDependencies": {
-    "nock": "^9.6.1",
-    "standard": "^12.0.0",
-    "standard-version": "*",
-    "tap": "*",
-    "weallbehave": "*",
-    "weallcontribute": "*"
+    "nock": "^12.0.1",
+    "standard": "^14.3.1",
+    "standard-version": "^7.1.0",
+    "tap": "^14.10.6"
   },
   "repository": {
     "type": "git",
@@ -41,8 +36,9 @@
   "homepage": "https://npmjs.com/package/libnpmorg",
   "dependencies": {
     "aproba": "^2.0.0",
-    "figgy-pudding": "^3.4.1",
-    "get-stream": "^4.0.0",
-    "npm-registry-fetch": "^4.0.0"
+    "npm-registry-fetch": "^8.0.0"
+  },
+  "engines": {
+    "node": ">=10"
   }
 }
