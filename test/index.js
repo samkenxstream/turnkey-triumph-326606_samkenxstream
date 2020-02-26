@@ -1,15 +1,14 @@
 'use strict'
 
-const figgyPudding = require('figgy-pudding')
-const getStream = require('get-stream')
 const test = require('tap').test
-const tnock = require('./util/tnock.js')
+const tnock = require('./fixtures/tnock.js')
 
 const org = require('../index.js')
 
-const OPTS = figgyPudding({ registry: {} })({
+const OPTS = {
   registry: 'https://mock.reg/'
-})
+}
+const REG = 'https://registry.npmjs.org/'
 
 test('set', t => {
   const memDeets = {
@@ -46,6 +45,15 @@ test('optional role for set', t => {
   })
 })
 
+test('rm with no options', t => {
+  tnock(t, REG).delete('/-/org/myorg/user', {
+    user: 'myuser'
+  }).reply(204)
+  return org.rm('myorg', 'myuser').then(() => {
+    t.ok(true, 'request succeeded')
+  })
+})
+
 test('rm', t => {
   tnock(t, OPTS.registry).delete('/-/org/myorg/user', {
     user: 'myuser'
@@ -55,11 +63,23 @@ test('rm', t => {
   })
 })
 
+test('ls with no options', t => {
+  const roster = {
+    zkat: 'developer',
+    iarna: 'admin',
+    isaacs: 'owner'
+  }
+  tnock(t, REG).get('/-/org/myorg/user').reply(200, roster)
+  return org.ls('myorg').then(res => {
+    t.deepEqual(res, roster, 'got back a roster')
+  })
+})
+
 test('ls', t => {
   const roster = {
-    'zkat': 'developer',
-    'iarna': 'admin',
-    'isaacs': 'owner'
+    zkat: 'developer',
+    iarna: 'admin',
+    isaacs: 'owner'
   }
   tnock(t, OPTS.registry).get('/-/org/myorg/user').reply(200, roster)
   return org.ls('myorg', OPTS).then(res => {
@@ -67,15 +87,28 @@ test('ls', t => {
   })
 })
 
+test('ls stream with no options', t => {
+  const roster = {
+    zkat: 'developer',
+    iarna: 'admin',
+    isaacs: 'owner'
+  }
+  const rosterArr = Object.keys(roster).map(k => [k, roster[k]])
+  tnock(t, REG).get('/-/org/myorg/user').reply(200, roster)
+  return org.ls.stream('myorg').then(res => {
+    t.deepEqual(res, rosterArr, 'got back a roster, in entries format')
+  })
+})
+
 test('ls stream', t => {
   const roster = {
-    'zkat': 'developer',
-    'iarna': 'admin',
-    'isaacs': 'owner'
+    zkat: 'developer',
+    iarna: 'admin',
+    isaacs: 'owner'
   }
   const rosterArr = Object.keys(roster).map(k => [k, roster[k]])
   tnock(t, OPTS.registry).get('/-/org/myorg/user').reply(200, roster)
-  return getStream.array(org.ls.stream('myorg', OPTS)).then(res => {
+  return org.ls.stream('myorg', OPTS).then(res => {
     t.deepEqual(res, rosterArr, 'got back a roster, in entries format')
   })
 })
