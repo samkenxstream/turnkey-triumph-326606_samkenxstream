@@ -16,7 +16,7 @@
     "prerelease": "npm t",
     "release": "standard-version -s",
     "postrelease": "npm publish && git push --follow-tags",
-    "pretest": "standard",
+    "lint": "standard",
     "test": "tap"
   },
   "tap": {
