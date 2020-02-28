@@ -9,8 +9,10 @@ const cmd = module.exports = {}
 
 class MembershipDetail {}
 cmd.set = (org, user, role, opts = {}) => {
-  if (typeof role === 'object' &&
-  Object.keys(opts).length === 0) {
+  if (
+    typeof role === 'object' &&
+    Object.keys(opts).length === 0
+  ) {
     opts = role
     role = undefined
   }

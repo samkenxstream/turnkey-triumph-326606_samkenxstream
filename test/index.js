@@ -19,13 +19,17 @@ test('set', t => {
     user: 'myuser',
     role: 'admin'
   }
-  tnock(t, OPTS.registry).put('/-/org/myorg/user', {
-    user: 'myuser',
-    role: 'admin'
-  }).reply(201, memDeets)
-  return org.set('myorg', 'myuser', 'admin', OPTS).then(res => {
-    t.deepEqual(res, memDeets, 'got a membership details object back')
-  })
+  tnock(t, OPTS.registry)
+    .put('/-/org/myorg/user', {
+      user: 'myuser',
+      role: 'admin'
+    })
+    .reply(201, memDeets)
+
+  return org.set('myorg', 'myuser', 'admin', OPTS)
+    .then(res => {
+      t.deepEqual(res, memDeets, 'got a membership details object back')
+    })
 })
 
 test('optional role for set', t => {
@@ -58,9 +62,11 @@ test('rm', t => {
   tnock(t, OPTS.registry).delete('/-/org/myorg/user', {
     user: 'myuser'
   }).reply(204)
-  return org.rm('myorg', 'myuser', OPTS).then(() => {
-    t.ok(true, 'request succeeded')
-  })
+  return org.rm('myorg', 'myuser', OPTS)
+    .then(ret => {
+      t.equal(ret, null, 'null return value')
+      t.ok(true, 'request succeeded')
+    })
 })
 
 test('ls with no options', t => {
