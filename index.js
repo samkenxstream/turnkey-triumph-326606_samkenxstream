@@ -16,43 +16,46 @@ cmd.set = (org, user, role, opts = {}) => {
     opts = role
     role = undefined
   }
-  return new Promise((resolve, reject) => {
+  return Promise.resolve().then(() => {
     validate('SSSO|SSZO', [org, user, role, opts])
     user = user.replace(/^@?/, '')
     org = org.replace(/^@?/, '')
-    fetch.json(`/-/org/${eu(org)}/user`, {
+    return fetch.json(`/-/org/${eu(org)}/user`, {
       ...opts,
       method: 'PUT',
       body: { user, role }
-    }).then(resolve, reject)
-  }).then(ret => Object.assign(new MembershipDetail(), ret))
+    }).then(ret => Object.assign(new MembershipDetail(), ret))
+  })
 }
 
 cmd.rm = (org, user, opts = {}) => {
-  return new Promise((resolve, reject) => {
+  return Promise.resolve().then(() => {
     validate('SSO', [org, user, opts])
     user = user.replace(/^@?/, '')
     org = org.replace(/^@?/, '')
-    fetch(`/-/org/${eu(org)}/user`, {
+    return fetch(`/-/org/${eu(org)}/user`, {
       ...opts,
       method: 'DELETE',
       body: { user },
       ignoreBody: true
-    }).then(resolve, reject)
-  }).then(() => null)
+    }).then(() => null)
+  })
 }
 
 class Roster {}
 cmd.ls = (org, opts = {}) => {
-  return new Promise((resolve, reject) => {
-    cmd.ls.stream(org, opts).then(entries => {
-      const obj = {}
-      for (const [key, val] of entries) {
-        obj[key] = val
-      }
-      return obj
-    }).then(resolve, reject)
-  }).then(ret => Object.assign(new Roster(), ret))
+  return Promise.resolve().then(() => {
+    return cmd.ls.stream(org, opts)
+      .collect()
+      .then(data => data.reduce((acc, [key, val]) => {
+        if (!acc) {
+          acc = {}
+        }
+        acc[key] = val
+        return acc
+      }, null))
+      .then(ret => Object.assign(new Roster(), ret))
+  })
 }
 
 cmd.ls.stream = (org, opts = {}) => {
