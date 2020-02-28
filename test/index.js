@@ -1,5 +1,6 @@
 'use strict'
 
+const Minipass = require('minipass')
 const test = require('tap').test
 const tnock = require('./fixtures/tnock.js')
 
@@ -94,6 +95,7 @@ test('ls', t => {
 })
 
 test('ls stream with no options', t => {
+  t.plan(2)
   const roster = {
     zkat: 'developer',
     iarna: 'admin',
@@ -101,12 +103,16 @@ test('ls stream with no options', t => {
   }
   const rosterArr = Object.keys(roster).map(k => [k, roster[k]])
   tnock(t, REG).get('/-/org/myorg/user').reply(200, roster)
-  return org.ls.stream('myorg').then(res => {
-    t.deepEqual(res, rosterArr, 'got back a roster, in entries format')
-  })
+  const result = org.ls.stream('myorg')
+  t.ok(Minipass.isStream(result), 'returns a stream')
+  return result.collect()
+    .then(res => {
+      t.deepEqual(res, rosterArr, 'got back a roster, in entries format')
+    })
 })
 
 test('ls stream', t => {
+  t.plan(2)
   const roster = {
     zkat: 'developer',
     iarna: 'admin',
@@ -114,7 +120,10 @@ test('ls stream', t => {
   }
   const rosterArr = Object.keys(roster).map(k => [k, roster[k]])
   tnock(t, OPTS.registry).get('/-/org/myorg/user').reply(200, roster)
-  return org.ls.stream('myorg', OPTS).then(res => {
-    t.deepEqual(res, rosterArr, 'got back a roster, in entries format')
-  })
+  const result = org.ls.stream('myorg', OPTS)
+  t.ok(Minipass.isStream(result), 'returns a stream')
+  return result.collect()
+    .then(res => {
+      t.deepEqual(res, rosterArr, 'got back a roster, in entries format')
+    })
 })

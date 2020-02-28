@@ -63,5 +63,5 @@ cmd.ls.stream = (org, opts = {}) => {
     mapJSON: (value, [key]) => {
       return [key, value]
     }
-  }).collect()
+  })
 }
