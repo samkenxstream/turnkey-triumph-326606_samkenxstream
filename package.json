@@ -19,6 +19,9 @@
     "lint": "standard",
     "test": "tap"
   },
+  "files": [
+    "index.js"
+  ],
   "tap": {
     "check-coverage": true
   },
