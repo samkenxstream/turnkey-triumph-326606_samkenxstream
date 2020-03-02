@@ -5,7 +5,7 @@ const fetch = require('npm-registry-fetch')
 const validate = require('aproba')
 
 // From https://github.com/npm/registry/blob/master/docs/orgs/memberships.md
-const cmd = module.exports = {}
+const cmd = module.exports
 
 class MembershipDetail {}
 cmd.set = (org, user, role, opts = {}) => {
@@ -16,46 +16,40 @@ cmd.set = (org, user, role, opts = {}) => {
     opts = role
     role = undefined
   }
-  return Promise.resolve().then(() => {
-    validate('SSSO|SSZO', [org, user, role, opts])
-    user = user.replace(/^@?/, '')
-    org = org.replace(/^@?/, '')
-    return fetch.json(`/-/org/${eu(org)}/user`, {
-      ...opts,
-      method: 'PUT',
-      body: { user, role }
-    }).then(ret => Object.assign(new MembershipDetail(), ret))
-  })
+  validate('SSSO|SSZO', [org, user, role, opts])
+  user = user.replace(/^@?/, '')
+  org = org.replace(/^@?/, '')
+  return fetch.json(`/-/org/${eu(org)}/user`, {
+    ...opts,
+    method: 'PUT',
+    body: { user, role }
+  }).then(ret => Object.assign(new MembershipDetail(), ret))
 }
 
 cmd.rm = (org, user, opts = {}) => {
-  return Promise.resolve().then(() => {
-    validate('SSO', [org, user, opts])
-    user = user.replace(/^@?/, '')
-    org = org.replace(/^@?/, '')
-    return fetch(`/-/org/${eu(org)}/user`, {
-      ...opts,
-      method: 'DELETE',
-      body: { user },
-      ignoreBody: true
-    }).then(() => null)
-  })
+  validate('SSO', [org, user, opts])
+  user = user.replace(/^@?/, '')
+  org = org.replace(/^@?/, '')
+  return fetch(`/-/org/${eu(org)}/user`, {
+    ...opts,
+    method: 'DELETE',
+    body: { user },
+    ignoreBody: true
+  }).then(() => null)
 }
 
 class Roster {}
 cmd.ls = (org, opts = {}) => {
-  return Promise.resolve().then(() => {
-    return cmd.ls.stream(org, opts)
-      .collect()
-      .then(data => data.reduce((acc, [key, val]) => {
-        if (!acc) {
-          acc = {}
-        }
-        acc[key] = val
-        return acc
-      }, null))
-      .then(ret => Object.assign(new Roster(), ret))
-  })
+  return cmd.ls.stream(org, opts)
+    .collect()
+    .then(data => data.reduce((acc, [key, val]) => {
+      if (!acc) {
+        acc = {}
+      }
+      acc[key] = val
+      return acc
+    }, null))
+    .then(ret => Object.assign(new Roster(), ret))
 }
 
 cmd.ls.stream = (org, opts = {}) => {
