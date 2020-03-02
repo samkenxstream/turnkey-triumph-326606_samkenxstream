@@ -1,6 +1,6 @@
 {
   "name": "libnpmorg",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Programmatic api for `npm org` commands",
   "author": "Kat Marchán <kzm@sykosomatic.org>",
   "keywords": [
